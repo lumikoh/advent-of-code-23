@@ -1,19 +1,22 @@
-max_cubes = {
-    "red": 12,
-    "green": 13,
-    "blue": 14
-}
+import functools
 
-def validate(line):
+def find_power(line):
+    min_cubes = {
+        "red": 1,
+        "green": 1,
+        "blue": 1
+    }
+
     [game, data] = line.split(":")
 
     for part in data.split(";"):
         for cubes in part.split(","):
             [count, color] = cubes.strip().split(" ")
-            if(max_cubes[color] < int(count)):
-                return 0
+
+            if(min_cubes[color] < int(count)):
+                min_cubes[color] = int(count)
             
-    return int(game.strip("Game "))
+    return functools.reduce(lambda a, b: a*b, min_cubes.values(), 1)
 
 def main():
 
@@ -22,7 +25,7 @@ def main():
         sum = 0
 
         for line in reader:
-            sum = sum + validate(line)
+            sum = sum + find_power(line)
 
         print("The answer is:", sum)
 
