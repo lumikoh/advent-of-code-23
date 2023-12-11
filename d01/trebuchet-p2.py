@@ -44,7 +44,6 @@ def main():
                     for key in numbers:
                         if key in substr:
                             second = numbers[key]
-                            print(second)
                             break
 
                 if second != -1 and first != -1:
@@ -55,7 +54,7 @@ def main():
             
             sum = sum + first*10 + second
 
-        print(sum)
+        print("The answer is:", sum)
 
 
 if __name__ == "__main__":

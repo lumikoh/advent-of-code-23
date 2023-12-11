@@ -29,7 +29,7 @@ def main():
             
             sum = sum + first*10 + second
 
-        print(sum)
+        print("The answer is:", sum)
 
 
 if __name__ == "__main__":
