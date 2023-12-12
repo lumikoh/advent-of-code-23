@@ -2,11 +2,12 @@ def main():
     prev = {}
     next = {}
 
-
     with open('input.txt') as reader:
+        
         numbers = list(map(int, reader.readline().split(":")[1].strip().split(" ")))
         for num in numbers:
             next[num] = num
+
         for line in reader:
             if line.strip() == "":
                 continue
