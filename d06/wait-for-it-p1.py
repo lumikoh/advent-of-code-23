@@ -1,3 +1,5 @@
+import math
+
 def main():
     result = 1
 
@@ -11,11 +13,7 @@ def main():
         b = list(map(int,b))
 
         for i in range(len(a)):
-            winners = 0
-            for j in range(1,a[i]+1):
-                if j*(a[i]-j) > b[i]:
-                    winners = winners + 1
-            result = result*winners
+            result = result*(a[i]-(2*math.ceil((a[i]-math.sqrt(a[i]**2-4*b[i]))/2))+1)
 
     print("The answer is:", result)
 

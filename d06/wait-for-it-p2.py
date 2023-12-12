@@ -1,16 +1,15 @@
+import math
+
 def main():
-    result = 0
 
     with open('input.txt') as reader:
 
         a = int(reader.readline().split(":")[1].replace(" ", ""))
         b = int(reader.readline().split(":")[1].replace(" ", ""))
+        
+        z = a-(2*math.ceil((a-math.sqrt(a**2-4*b))/2))+1
 
-        for j in range(1,a+1):
-            if j*(a-j) > b:
-                result = result + 1
-
-    print("The answer is:", result)
+        print("The answer is:", z)
 
 
 if __name__ == "__main__":
