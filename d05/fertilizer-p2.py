@@ -4,17 +4,13 @@ def main():
 
     with open('input.txt') as reader:
 
-        mode = 0
+        numbers = list(map(int, reader.readline().split(":")[1].strip().split(" ")))
+        for i in range(len(numbers)//2):
+            next[(numbers[2*i],(numbers[2*i+1]))] = (numbers[2*i],(numbers[2*i+1]))
 
         for line in reader:
             if line.strip() == "":
-                mode = 1
                 continue
-
-            if mode == 0:
-                numbers = list(map(int, line.split(":")[1].strip().split(" ")))
-                for i in range(len(numbers)//2):
-                    next[(numbers[2*i],(numbers[2*i+1]))] = (numbers[2*i],(numbers[2*i+1]))
 
             elif ":" in line:
                 prev = next
@@ -34,35 +30,26 @@ def main():
                     p_start,p_range = prev[(p_key,p_val)]
                     p_end = p_start + p_range
 
-                    if p_start >= n_start and p_start < n_end:
-                        next.pop((p_start,p_range))
-                        copyprev.pop((p_key,p_val))
+                    if p_start >= n_end or p_end <= n_start:
+                        continue
 
-                        if p_end < n_end:
-                            next[(p_start, p_range)] = (parts[0]+p_start-n_start,p_range)
+                    next.pop((p_start,p_range))
+                    copyprev.pop((p_key,p_val))
 
-                        else:
-                            next[(p_start, n_end-p_start)] = (parts[0]+p_start-n_start,n_end-p_start)
-                            next[(n_end,p_end-n_end)] = (n_end,p_end-n_end)
-                            copyprev[(p_key-p_end+n_end,p_end-n_end)] = (n_end,p_end-n_end)
+                    end = p_end
+                    start = p_start
 
-                    elif p_end > n_start and p_end <= n_end:
-                        next.pop((p_start,p_range))
-                        copyprev.pop((p_key,p_val))
+                    if p_end >= n_end:
+                        next[(n_end,p_end-n_end)] = (n_end,p_end-n_end)
+                        copyprev[(p_key-p_end+n_end,p_end-n_end)] = (n_end,p_end-n_end)
+                        end = n_end
 
-                        next[(n_start, p_end-n_start)] = (parts[0],p_end-n_start)
+                    if p_start < n_start:
                         next[(p_start, n_start-p_start)] = (p_start,n_start-p_start)
                         copyprev[(p_key,n_start-p_start)] = (p_start,n_start-p_start)
+                        start = n_start
 
-                    elif p_end > n_end and p_start < n_start:
-                        next.pop((p_start,p_range))
-                        copyprev.pop((p_key,p_val))
-
-                        next[(n_start, n_end-n_start)] = (parts[0],n_end-n_start)
-                        next[(n_end, p_end-n_end)] = (n_end, p_end-n_end)
-                        next[(p_start, n_start-p_start)] = (p_start, n_start-p_start)
-                        copyprev[(p_key+n_end-p_end,p_end-n_end)] = (n_end, p_end-n_end)
-                        copyprev[(p_key, n_start-p_start)] = (p_start, n_start-p_start)
+                    next[(start, end-start)] = (parts[0]+start-n_start, end-start)
                 
                 prev = dict(copyprev)
 
